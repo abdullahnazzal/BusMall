@@ -26,8 +26,27 @@ let product = [];
 let votes = [];
 let views = [];
 
-let ctx = document.getElementById('myChart').getContext('2d');
 let myChart;
+
+function saveToLocalStorage() {
+    let data = JSON.stringify(productList);
+    localStorage.setItem("product", data);
+}
+
+function readFromLocalStorage() {
+    let stringObj = localStorage.getItem("product");
+    let normalObj = JSON.parse(stringObj);
+    console.log("------------------------------"+ normalObj)
+
+    if (normalObj != null) {
+        productList = normalObj;
+        // viewResults();
+        // renderCharts();
+    }
+}
+readFromLocalStorage();
+
+
 
 function Products(productsName) {
     this.pName = productsName.split('.')[0];
@@ -44,6 +63,7 @@ function Products(productsName) {
 //let newProd=new Products(productImg[6]);
 for (let i = 0; i < productImg.length; i++) {
     new Products(productImg[i]);
+
 }
 // console.log(newProd)
 console.log(product)
@@ -71,42 +91,6 @@ function unique() {
     }
 }
 
-
-
-// while (pMidIndex == leftIndex || pMidIndex == midIndex || pMidIndex == rightIndex) {
-//     // while (leftIndex === midIndex || leftIndex === rightIndex || midIndex === rightIndex) {
-//     // if (pLeftIndex != leftIndex || pMidIndex != midIndex || pRightIndex != rightIndex) {
-//     // unique();
-//     leftIndex = randomIndex();
-//     midIndex = randomIndex();
-//     rightIndex = randomIndex();
-
-
-//     // }
-
-//     // }
-//     // leftIndex = randomIndex();
-//     // midIndex = randomIndex();
-//     // rightIndex = randomIndex();
-// }
-// while (pRightIndex == leftIndex || pRightIndex == midIndex || pRightIndex == rightIndex) {
-//     // while (leftIndex === midIndex || leftIndex === rightIndex || midIndex === rightIndex) {
-//     // if (pLeftIndex != leftIndex || pMidIndex != midIndex || pRightIndex != rightIndex) {
-//     // unique();
-//     leftIndex = randomIndex();
-//     midIndex = randomIndex();
-//     rightIndex = randomIndex();
-
-
-//     // }
-
-//     // }
-//     // leftIndex = randomIndex();
-//     // midIndex = randomIndex();
-//     // rightIndex = randomIndex();
-// }
-
-// }
 let list = [];
 function renderRandomImg() {
     // saveIndex = []
@@ -127,31 +111,6 @@ function renderRandomImg() {
         // }
 
     }
-    // unique();
-
-    // while (saveIndex[0] || saveIndex[1] || saveIndex[2] == leftIndex || midIndex || rightIndex) {
-    //         leftIndex = randomIndex();
-    //         midIndex = randomIndex();
-    //         rightIndex = randomIndex();
-
-    // }
-
-    // leftIndex = randomIndex();
-    // midIndex = randomIndex();
-    // rightIndex = randomIndex();
-    // saveIndex.push([leftIndex, midIndex, rightIndex]);
-    // console.log(saveIndex);
-    // for (let i = 0; i < saveIndex.length; i++) {
-    //     for (let j = 0; j < saveIndex.length; j++) {
-    //         while (leftIndex === midIndex || leftIndex === rightIndex || midIndex === rightIndex || leftIndex == saveIndex[i][j] || midIndex == saveIndex[i][j] || rightIndex == saveIndex[i][j]) {
-    //             leftIndex = randomIndex();
-    //             midIndex = randomIndex();
-    //             rightIndex = randomIndex();
-    //         }
-    //     }
-
-    // }
-
 
     leftImgEl.setAttribute('src', productList[leftIndex].img);
     midImgEl.setAttribute('src', productList[midIndex].img);
@@ -201,6 +160,7 @@ function handelClicks(event) {
         renderRandomImg();
         // console.log(clickedImg);
         console.log(productList);
+        saveToLocalStorage();
     } else {
         //let ulEl = document.getElementById('results');
         // for (let i = 0; i < productList.length; i++) {
@@ -211,6 +171,8 @@ function handelClicks(event) {
         leftImgEl.removeEventListener('click', handelClicks);
         midImgEl.removeEventListener('click', handelClicks);
         rightImgEl.removeEventListener('click', handelClicks);
+        
+
     }
     if (attempts <= maxAttempts) {
         attemptsEl.textContent = `You Have ${maxAttempts - attempts} Round To Pick Your Favourite Products`;
@@ -219,12 +181,14 @@ function handelClicks(event) {
 
     attempts++;
 
+
 }
 
 function viewResults(event) {
     event.preventDefault();
-    
+
     // ctx = document.getElementById('myChart').getContext('2d');
+    // let ulEl = document.getElementById('results');
 
     // ulEl.innerHTML = "";
     // // ulEl.remove();
@@ -242,11 +206,13 @@ function viewResults(event) {
         views.push(productList[i].views);
     }
 
+
     renderCharts();
+    // saveToLocalStorage();
     //myChart.destroy();
 }
 function renderCharts() {
-    // ctx = document.getElementById('myChart').getContext('2d');
+    let ctx = document.getElementById('myChart').getContext('2d');
     myChart = new Chart(ctx, {
         type: 'bar',
         data: {
@@ -282,4 +248,6 @@ function renderCharts() {
             }
         }
     });
+    // saveToLocalStorage();
+
 }
