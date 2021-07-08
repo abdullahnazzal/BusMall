@@ -17,22 +17,26 @@ let maxAttempts = 25;
 let myForm = document.getElementById('myForm');
 myForm.addEventListener('submit', viewResults);
 
+//Array to story all Products's Object
 let productList = [];
 
 
 let productImg = ['bag.jpg', 'banana.jpg', 'bathroom.jpg', 'boots.jpg', 'breakfast.jpg', 'bubblegum.jpg', 'chair.jpg', 'cthulhu.jpg', 'dog-duck.jpg', 'dragon.jpg', 'pen.jpg', 'pet-sweep.jpg', 'scissors.jpg', 'shark.jpg', 'sweep.png', 'tauntaun.jpg', 'unicorn.jpg', 'water-can.jpg', 'wine-glass.jpg'];
 
+//Array to story all Products's Object.name
 let product = [];
 let votes = [];
 let views = [];
 
 let myChart;
 
+//To save my votes,views in data
 function saveToLocalStorage() {
     let data = JSON.stringify(productList);
     localStorage.setItem("product", data);
 }
 
+//To read my votes,views from data
 function readFromLocalStorage() {
     let stringObj = localStorage.getItem("product");
     let normalObj = JSON.parse(stringObj);
